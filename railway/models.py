@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 class Register(models.Model):
     user = models.ForeignKey(User,on_delete=models.CASCADE,null=True)
     mobile = models.CharField(max_length=10,null=True)
-    add = models.CharField(max_length=100,null=True)
+    address = models.CharField(max_length=100,null=True)
     dob = models.DateField(null=True)
     gender = models.CharField(max_length=10,null=True)
     def __str__(self):
@@ -13,7 +13,7 @@ class Register(models.Model):
 
 
 
-class Add_Train(models.Model):
+class Train(models.Model):
     trainname = models.CharField(max_length=30,null=True)
     train_no = models.IntegerField(null=True)
     from_city = models.CharField(max_length=30,null=True)
@@ -26,21 +26,20 @@ class Add_Train(models.Model):
     def __str__(self):
         return self.trainname+" "+str(self.train_no)
 
-class Add_route(models.Model):
-    train = models.ForeignKey(Add_Train,on_delete=models.CASCADE,null=True)
-    route = models.CharField(max_length=100,null=True)
-    distance=models.IntegerField(null=True)
+class Station(models.Model):
+    train = models.ForeignKey(Train,on_delete=models.CASCADE,null=True)
+    station_name = models.CharField(max_length=100,null=True)
     fare=models.IntegerField(null=True)
     def __str__(self):
         return self.route+" "+str(self.train.train_no)
 
 class Passenger(models.Model):
     user = models.ForeignKey(Register,on_delete=models.CASCADE,null=True)
-    train = models.ForeignKey(Add_Train,on_delete=models.CASCADE,null=True)
+    train = models.ForeignKey(Train,on_delete=models.CASCADE,null=True)
     name = models.CharField(max_length=100,null=True)
     age = models.IntegerField(null=True)
     gender = models.CharField(max_length=30,null=True)
-    route=models.CharField(max_length=100,null=True)
+    station_name=models.CharField(max_length=100,null=True)
     status = models.CharField(max_length=30,null=True)
     date1 = models.DateField(null=True)
     fare = models.IntegerField(null=True)
@@ -48,10 +47,10 @@ class Passenger(models.Model):
     def __str__(self):
         return self.user.user.username+" "+self.name
 
-class Book_ticket(models.Model):
+class Ticket(models.Model):
     passenger=models.ForeignKey(Passenger,on_delete=models.CASCADE,null=True)
     user=models.ForeignKey(Register,on_delete=models.CASCADE,null=True)
-    route=models.CharField(max_length=100,null=True)
+    station_nameo=models.CharField(max_length=100,null=True)
     date2=models.DateField(null=True)
     fare=models.IntegerField(null=True)
     def __str__(self):
